@@ -58,9 +58,9 @@ class _MyAppState extends State<MyApp> {
 
   void _answerQuestion(int score) {
     setState(() {
-      _questionIndex++;
+      _questionIndex = _questionIndex + 1;
       _totalScore += score;
-      print(_questionIndex);
+      // print(_questionIndex);
     });
     if (_questionIndex < _questions.length) {
       print('We have more questions!');
@@ -89,4 +89,4 @@ class _MyAppState extends State<MyApp> {
 
 // variables inside of class - properties
 // functions inside of class - methods
-// e.g build is a method of StatelessWidget
+// e.g build is a method of StatelessWidget (and build is required to be overwritten)
