@@ -67,4 +67,9 @@ class Cart with ChangeNotifier {
     _items.remove(productId); // remove things in a map by the key
     notifyListeners();
   }
+
+  void clear() {
+    _items = {};
+    notifyListeners();
+  }
 }
