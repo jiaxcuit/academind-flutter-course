@@ -12,23 +12,27 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return transactions.isEmpty
-        ? Column(
-            children: [
-              Text(
-                'No transactions added yet',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              SizedBox(
-                height: 10, // spacing
-              ),
-              Container(
-                height: 200,
-                child: Image.asset(
-                  'assets/images/waiting.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
+        ? LayoutBuilder(
+            builder: ((context, constraints) {
+              return Column(
+                children: [
+                  Text(
+                    'No transactions added yet',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  SizedBox(
+                    height: 10, // spacing
+                  ),
+                  Container(
+                    height: constraints.maxHeight * 0.6,
+                    child: Image.asset(
+                      'assets/images/waiting.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              );
+            }),
           )
         : ListView.builder(
             itemBuilder: (ctx, index) {
@@ -69,7 +73,7 @@ class TransactionList extends StatelessWidget {
   }
 }
 
-/*
+/* // to generate a list of transactions without using ListTile widget
 Card(
                   child: Row(
                     children: [
