@@ -39,15 +39,35 @@ class Products with ChangeNotifier {
     ),
   ];
 
+  var _showFavoritesOnly = false;
+
   List<Product> get items {
+    // if (_showFavoritesOnly) {
+    //   return _items.where((prod) => prod.isFavorite).toList();
+    // } else {
     return [..._items];
+    // }
     //to avoid changing _items from anywhere else, so that we make sure all widgets know that _items has been changed through addProduct()
+  }
+
+  List<Product> get favoriteItems {
+    return _items.where((prod) => prod.isFavorite == true).toList();
   }
 
   void addProduct() {
     // _items.add(value);
     notifyListeners();
   }
+
+  // void showFavoritesOnly() {
+  //   _showFavoritesOnly = true;
+  //   notifyListeners();
+  // }
+
+  // void showAll() {
+  //   _showFavoritesOnly = false;
+  //   notifyListeners();
+  // }
 
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
