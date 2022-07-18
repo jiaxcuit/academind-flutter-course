@@ -1,4 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../models/http_exception.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -17,8 +22,37 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void toggleFavoriteStatus() {
+  void _setFavValue(bool newValue) {
+    isFavorite = newValue;
+    notifyListeners();
+  }
+
+  Future<void> toggleFavoriteStatus() async {
+    var oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
+
+    final url = Uri.https(
+        'flutter-course-344ab-default-rtdb.europe-west1.firebasedatabase.app',
+        '/products/${id}.json');
+    try {
+      final response = await http.patch(
+        url,
+        body: json.encode({
+          'isFavorite': isFavorite,
+        }),
+      );
+      if (response.statusCode >= 400) {
+        _setFavValue(oldStatus);
+        throw HttpException(isFavorite
+            ? 'Could not remove from favorite'
+            : 'Could not add to favorite');
+      }
+    } catch (error) {
+      _setFavValue(oldStatus);
+      throw HttpException(isFavorite
+          ? 'Could not remove from favorite'
+          : 'Could not add to favorite');
+    }
   }
 }
